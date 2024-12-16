@@ -1,8 +1,4 @@
 import streamlit as st
-import streamlit_option_menu as som
-from PIL import Image
-import io
-import os
 from pages import login, register, dashboard, upload, chat, results
 
 # Set page config
@@ -24,7 +20,7 @@ st.markdown("""
         color: white;
     }
     .sidebar .sidebar-content {
-        background-color: #76b852 !important;
+        background-color: #76b852;
     }
     .big-font {
         font-size: 24px !important;
@@ -40,14 +36,8 @@ st.markdown("""
         color: #333333 !important;
     }
     .stButton > button {
-        background-color: #76b852 !important;
-        color: white !important;
-        border: none !important;
-        padding: 0.5rem 1rem !important;
-    }
-    .stButton > button:hover {
+        color: #ffffff !important;
         background-color: #5a8f3d !important;
-        border: none !important;
     }
     .stTab > button {
         color: #333333 !important;
@@ -58,47 +48,24 @@ st.markdown("""
     p, .stMarkdown {
         color: #333333 !important;
     }
-    /* Hide default Streamlit sidebar */
-    [data-testid="stSidebar"] [data-testid="stSidebarNav"] {
-        display: none;
-    }
-
-    /* Improve input field styling */
-    .stTextInput input, .stTextArea textarea {
-        background-color: white !important;
-        color: #333333 !important;
-        border: 1px solid #76b852 !important;
-    }
-
-    /* Custom sidebar styling */
+    /* Custom styles for the sidebar */
     .sidebar .sidebar-content {
-        background-color: #76b852 !important;
+        background-color: #76b852;
     }
-
-    /* Tab styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 2px;
-        background-color: transparent;
-        padding: 0 1rem;
+    .sidebar .stRadio > div {
+        flex-direction: column;
     }
-
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 4px 4px 0px 0px;
+    .sidebar .stRadio label {
         color: white !important;
-        border: none !important;
-        padding: 0 20px;
+        background-color: #5a8f3d;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        text-align: center;
+        cursor: pointer;
     }
-
-    .stTabs [aria-selected="true"] {
-        background-color: white !important;
-        color: #76b852 !important;
-    }
-
-    /* Remove any margin/padding from tab panels */
-    .stTabs [data-baseweb="tab-panel"] {
-        padding-top: 1rem;
+    .sidebar .stRadio label:hover {
+        background-color: #4a7f2d;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -121,18 +88,12 @@ def main():
     else:
         # Sidebar menu
         with st.sidebar:
-            selected = som.option_menu(
-                "Menu",
+            st.markdown('<h2 style="color: white;">Menu</h2>', unsafe_allow_html=True)
+            selected = st.radio(
+                "",
                 ["Jenis", "Unggah", "Chat AI", "Hasil"],
-                icons=['plant', 'upload', 'chat-dots', 'clipboard-data'],
-                menu_icon="list",
-                default_index=0,
-                styles={
-                    "container": {"padding": "5!important", "background-color": "#76b852"},
-                    "icon": {"color": "white", "font-size": "25px"}, 
-                    "nav-link": {"color": "white", "font-size": "16px", "text-align": "left", "margin":"0px"},
-                    "nav-link-selected": {"background-color": "#5a8f3d"},
-                }
+                index=0,
+                key="sidebar_menu"
             )
         
         if selected == "Jenis":
