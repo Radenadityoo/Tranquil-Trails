@@ -24,7 +24,7 @@ def show_chat():
             st.markdown(f"<p style='color: #333333;'>{prompt}</p>", unsafe_allow_html=True)
             
         # Add your chatbot logic here
-        response = "This is a sample response. Replace with your actual chatbot implementation."
+        response = "Ini adalah respons contoh. Ganti dengan implementasi chatbot yang sebenarnya."
         
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})

@@ -14,7 +14,7 @@ def load_model(model_path):
     if TORCH_AVAILABLE:
         return YOLO(model_path)
     else:
-        st.error("PyTorch and YOLO are not available. Unable to load the model.")
+        st.error("PyTorch dan YOLO tidak tersedia. Tidak dapat memuat model.")
         return None
 
 def predict(model, image):
@@ -22,14 +22,14 @@ def predict(model, image):
         results = model(image)
         return results
     else:
-        st.error("PyTorch and YOLO are not available. Unable to make predictions.")
+        st.error("PyTorch dan YOLO tidak tersedia. Tidak dapat melakukan prediksi.")
         return None
 
 def show_upload():
     st.markdown("<h2 style='color: #333333;'>Unggah atau ambil gambar untuk mendeteksi penyakit tanaman</h2>", unsafe_allow_html=True)
 
     if not TORCH_AVAILABLE:
-        st.warning("PyTorch and YOLO are not available. Some features may be limited.")
+        st.warning("PyTorch dan YOLO tidak tersedia. Beberapa fitur mungkin terbatas.")
 
     # Get the selected plant type from session state
     selected_plant = st.session_state.get('selected_plant', 'paddy')
@@ -43,46 +43,43 @@ def show_upload():
     model_path = model_paths.get(selected_plant, "best1.pt")
     model = load_model(model_path) if TORCH_AVAILABLE else None
 
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-    camera_input = st.camera_input("Take a picture")
+    uploaded_file = st.file_uploader("Pilih gambar...", type=["jpg", "jpeg", "png"])
+    camera_input = st.camera_input("Ambil gambar")
 
     if uploaded_file is not None:
         image = Image.open(uploaded_file).convert('RGB')
-        st.image(image, caption='Uploaded Image', use_column_width=True)
-        if st.button("Analyze", key="analyze_upload_button"):
+        st.image(image, caption='Gambar yang Diunggah', use_container_width=True)
+        if st.button("Analisis", key="analyze_upload_button"):
             if TORCH_AVAILABLE:
                 results = predict(model, image)
                 display_results(image, results)
             else:
-                st.error("Unable to analyze. PyTorch and YOLO are not available.")
+                st.error("Tidak dapat menganalisis. PyTorch dan YOLO tidak tersedia.")
 
     elif camera_input is not None:
         image = Image.open(camera_input).convert('RGB')
-        st.image(image, caption='Captured Image', use_column_width=True)
-        if st.button("Analyze", key="analyze_camera_button"):
+        st.image(image, caption='Gambar yang Diambil', use_container_width=True)
+        if st.button("Analisis", key="analyze_camera_button"):
             if TORCH_AVAILABLE:
                 results = predict(model, image)
                 display_results(image, results)
             else:
-                st.error("Unable to analyze. PyTorch and YOLO are not available.")
+                st.error("Tidak dapat menganalisis. PyTorch dan YOLO tidak tersedia.")
 
 def display_results(image, results):
     if results is not None:
         # Display the annotated image
         annotated_image = results[0].plot()
-        st.image(annotated_image, caption='Analysis Result', use_column_width=True)
-
-        # Display text results
-        st.markdown("<h3 style='color: #333333;'>Detected Issues:</h3>", unsafe_allow_html=True)
-        for r in results:
-            for c in r.boxes.cls:
-                label = r.names[int(c)]
-                confidence = r.boxes.conf[0]
-                st.markdown(f"<p style='color: #333333;'>• {label} (Confidence: {confidence:.2f})</p>", unsafe_allow_html=True)
-
-        # Store results in session state for the results page
+        
+        # Store results and analyzed image in session state
         st.session_state.analysis_result = results
-        st.success("Analysis complete! Check the Results tab for more details.")
+        st.session_state.analyzed_image = annotated_image
+        
+        st.success("Analisis selesai! Periksa tab Hasil untuk detail lebih lanjut.")
+        
+        # Automatically switch to results page after analysis
+        st.session_state.current_page = 'results'
+        st.rerun()
     else:
-        st.error("No results available. Analysis could not be performed.")
+        st.error("Tidak ada hasil yang tersedia. Analisis tidak dapat dilakukan.")
 

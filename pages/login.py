@@ -11,6 +11,7 @@ def show_login():
         if st.button("Masuk", use_container_width=True, key="login_button"):
             # Add your authentication logic here
             st.session_state.logged_in = True
+            st.session_state.current_page = 'dashboard'
             st.rerun()
     
     st.markdown("""
