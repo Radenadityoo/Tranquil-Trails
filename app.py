@@ -24,7 +24,7 @@ st.markdown("""
         color: white;
     }
     .sidebar .sidebar-content {
-        background-color: #76b852;
+        background-color: #76b852 !important;
     }
     .big-font {
         font-size: 24px !important;
@@ -40,8 +40,14 @@ st.markdown("""
         color: #333333 !important;
     }
     .stButton > button {
-        color: #ffffff !important;
+        background-color: #76b852 !important;
+        color: white !important;
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+    }
+    .stButton > button:hover {
         background-color: #5a8f3d !important;
+        border: none !important;
     }
     .stTab > button {
         color: #333333 !important;
@@ -51,6 +57,48 @@ st.markdown("""
     }
     p, .stMarkdown {
         color: #333333 !important;
+    }
+    /* Hide default Streamlit sidebar */
+    [data-testid="stSidebar"] [data-testid="stSidebarNav"] {
+        display: none;
+    }
+
+    /* Improve input field styling */
+    .stTextInput input, .stTextArea textarea {
+        background-color: white !important;
+        color: #333333 !important;
+        border: 1px solid #76b852 !important;
+    }
+
+    /* Custom sidebar styling */
+    .sidebar .sidebar-content {
+        background-color: #76b852 !important;
+    }
+
+    /* Tab styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 2px;
+        background-color: transparent;
+        padding: 0 1rem;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px 4px 0px 0px;
+        color: white !important;
+        border: none !important;
+        padding: 0 20px;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background-color: white !important;
+        color: #76b852 !important;
+    }
+
+    /* Remove any margin/padding from tab panels */
+    .stTabs [data-baseweb="tab-panel"] {
+        padding-top: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
